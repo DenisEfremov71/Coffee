@@ -33,6 +33,7 @@
 import SwiftUI
 import CoffeeKit
 
+// TODO: - delete this comment
 struct CoffeesView: View {
   @ObservedObject var model: CoffeeViewModel
   @State var isAddingCoffee: Bool = false
