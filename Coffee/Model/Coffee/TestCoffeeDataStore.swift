@@ -33,37 +33,37 @@
 import Foundation
 
 class TestCoffeeDataStore: CoffeeDataStore {
-  var coffees: [Coffee] = [
-    .tastyBeans,
-    .strongBeans
-  ]
-
-  func fetchCoffee() async throws -> [Coffee] {
-    return coffees
-  }
-
-  func saveCoffee(_ coffee: Coffee) async throws {
-    if let index = coffees.firstIndex(where: { $0.id == coffee.id }) {
-      coffees[index] = coffee
-    } else {
-      coffees.append(coffee)
+    var coffees: [Coffee] = [
+        .tastyBeans,
+        .strongBeans
+    ]
+    
+    func fetchCoffee() async throws -> [Coffee] {
+        return coffees
     }
-  }
+    
+    func saveCoffee(_ coffee: Coffee) async throws {
+        if let index = coffees.firstIndex(where: { $0.id == coffee.id }) {
+            coffees[index] = coffee
+        } else {
+            coffees.append(coffee)
+        }
+    }
 }
 
 public extension Coffee {
-  static let tastyBeans = Coffee(
-    id: 1,
-    name: "Super tasty beans",
-    tastingNotes: "These beans are tasty.",
-    sweetness: 0,
-    acidity: 0
-  )
-  static let strongBeans = Coffee(
-    id: 2,
-    name: "Super strong beans",
-    tastingNotes: "These beans are strong.",
-    sweetness: 0,
-    acidity: 0
-  )
+    static let tastyBeans = Coffee(
+        id: 1,
+        name: "Super tasty beans",
+        tastingNotes: "These beans are tasty.",
+        sweetness: 0,
+        acidity: 0
+    )
+    static let strongBeans = Coffee(
+        id: 2,
+        name: "Super strong beans",
+        tastingNotes: "These beans are strong.",
+        sweetness: 0,
+        acidity: 0
+    )
 }

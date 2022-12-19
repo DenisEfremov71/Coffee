@@ -33,11 +33,11 @@ import Foundation
 import SwiftUI
 
 public struct Coffee: Identifiable, Hashable, Codable {
-  public var id: Int
-  public var name: String
-  public var tastingNotes: String
-
-  // Flavor profile
-  public var sweetness: Int
-  public var acidity: Int
+    public var id: Int
+    public var name: String
+    public var tastingNotes: String
+    
+    // Flavor profile
+    public var sweetness: Int
+    public var acidity: Int
 }

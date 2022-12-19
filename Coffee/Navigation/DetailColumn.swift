@@ -33,29 +33,29 @@
 import SwiftUI
 
 struct DetailColumn: View {
-  @Binding var selection: Panel?
-  @ObservedObject var model: CoffeeViewModel
-  // @State var timeframe: Timeframe = .today
-
-  var body: some View {
-    switch selection ?? .coffee {
-    case .coffee:
-      CoffeesView(model: model)
+    @Binding var selection: Panel?
+    @ObservedObject var model: CoffeeViewModel
+    // @State var timeframe: Timeframe = .today
+    
+    var body: some View {
+        switch selection ?? .coffee {
+        case .coffee:
+            CoffeesView(model: model)
+        }
     }
-  }
 }
 
 struct DetailColumn_Previews: PreviewProvider {
-  struct Preview: View {
-    @State private var selection: Panel? = .coffee
-    @StateObject private var model = CoffeeViewModel.preview
-
-    var body: some View {
-      DetailColumn(selection: $selection, model: model)
+    struct Preview: View {
+        @State private var selection: Panel? = .coffee
+        @StateObject private var model = CoffeeViewModel.preview
+        
+        var body: some View {
+            DetailColumn(selection: $selection, model: model)
+        }
     }
-  }
-
-  static var previews: some View {
-    Preview()
-  }
+    
+    static var previews: some View {
+        Preview()
+    }
 }

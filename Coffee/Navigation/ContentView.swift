@@ -33,29 +33,29 @@
 import SwiftUI
 
 struct ContentView: View {
-  @ObservedObject var model: CoffeeViewModel
-  @State private var selection: Panel? = .coffee
-  @State private var path = NavigationPath()
-
-  var body: some View {
-    NavigationSplitView {
-      Sidebar(selection: $selection)
-    } detail: {
-      NavigationStack(path: $path) {
-        DetailColumn(selection: $selection, model: model)
-      }
+    @ObservedObject var model: CoffeeViewModel
+    @State private var selection: Panel? = .coffee
+    @State private var path = NavigationPath()
+    
+    var body: some View {
+        NavigationSplitView {
+            Sidebar(selection: $selection)
+        } detail: {
+            NavigationStack(path: $path) {
+                DetailColumn(selection: $selection, model: model)
+            }
+        }
     }
-  }
 }
 
 struct ContentView_Previews: PreviewProvider {
-  struct Preview: View {
-    @StateObject private var model = CoffeeViewModel.preview
-    var body: some View {
-      ContentView(model: model)
+    struct Preview: View {
+        @StateObject private var model = CoffeeViewModel.preview
+        var body: some View {
+            ContentView(model: model)
+        }
     }
-  }
-  static var previews: some View {
-    Preview()
-  }
+    static var previews: some View {
+        Preview()
+    }
 }

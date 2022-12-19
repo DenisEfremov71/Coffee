@@ -34,129 +34,129 @@ import CoffeeKit
 import SwiftUI
 
 struct CoffeeEditor: View {
-  @ObservedObject var model: CoffeeViewModel
-  var coffee: Binding<Coffee>
-  @Environment(\.dismiss) var dismiss
-
-  init(model: CoffeeViewModel, coffeeToEdit: Binding<Coffee>) {
-    self.model = model
-    self.coffee = coffeeToEdit
-  }
-
-  var body: some View {
-    Form {
-      editorContent
+    @ObservedObject var model: CoffeeViewModel
+    var coffee: Binding<Coffee>
+    @Environment(\.dismiss) var dismiss
+    
+    init(model: CoffeeViewModel, coffeeToEdit: Binding<Coffee>) {
+        self.model = model
+        self.coffee = coffeeToEdit
     }
-    .formStyle(.grouped)
-    .navigationTitle(coffee.name)
-    .toolbar {
-      ToolbarItemGroup(placement: .navigationBarLeading) {
-        Button {
-          dismiss()
-        } label: {
-          Text("Cancel")
+    
+    var body: some View {
+        Form {
+            editorContent
         }
-      }
-      ToolbarItemGroup(placement: .navigationBarTrailing) {
-        Button {
-          Task {
-            do {
-              try await model.saveCoffee(coffee.wrappedValue)
-              dismiss()
-            } catch {
-              // CoffeeViewModel handles the error alert variables.
+        .formStyle(.grouped)
+        .navigationTitle(coffee.name)
+        .toolbar {
+            ToolbarItemGroup(placement: .navigationBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Cancel")
+                }
             }
-          }
-        } label: {
-          Text("Save")
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button {
+                    Task {
+                        do {
+                            try await model.saveCoffee(coffee.wrappedValue)
+                            dismiss()
+                        } catch {
+                            // CoffeeViewModel handles the error alert variables.
+                        }
+                    }
+                } label: {
+                    Text("Save")
+                }
+                .accessibilityIdentifier(AccessibilityIdentifiers.saveCoffeeButton)
+            }
         }
-        .accessibilityIdentifier(AccessibilityIdentifiers.saveCoffeeButton)
-      }
-    }
-    .alert(
-      isPresented: $model.showCoffeeErrorAlert,
-      error: model.saveCoffeeError
-    ) {
-      Button("OK", role: .cancel) {
-        model.saveCoffeeError = nil
-      }
-      .accessibilityIdentifier(AccessibilityIdentifiers.closeErrorAlertButton)
-    }
-  }
-
-  @ViewBuilder
-  var editorContent: some View {
-    Section {
-      Image(systemName: "cup.and.saucer.fill")
-        .resizable()
-        .aspectRatio(contentMode: .fit)
-        .foregroundColor(Color.accentColor)
-    }
-
-    Section("Coffee Name") {
-      TextField(
-        "Name",
-        text: coffee.name,
-        prompt: Text(String(localized: "New Coffee", comment: "New coffee placeholder name."))
-      )
-    }
-
-    Section("Tasting notes") {
-      TextEditor(text: coffee.tastingNotes)
-    }
-
-    Section("Flavor Profile") {
-      Grid {
-        GridRow {
-          FlavorView(title: "Sweetness", value: coffee.sweetness)
+        .alert(
+            isPresented: $model.showCoffeeErrorAlert,
+            error: model.saveCoffeeError
+        ) {
+            Button("OK", role: .cancel) {
+                model.saveCoffeeError = nil
+            }
+            .accessibilityIdentifier(AccessibilityIdentifiers.closeErrorAlertButton)
         }
-        GridRow {
-          FlavorView(title: "Acidity", value: coffee.acidity)
-        }
-      }
     }
-  }
+    
+    @ViewBuilder
+    var editorContent: some View {
+        Section {
+            Image(systemName: "cup.and.saucer.fill")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .foregroundColor(Color.accentColor)
+        }
+        
+        Section("Coffee Name") {
+            TextField(
+                "Name",
+                text: coffee.name,
+                prompt: Text(String(localized: "New Coffee", comment: "New coffee placeholder name."))
+            )
+        }
+        
+        Section("Tasting notes") {
+            TextEditor(text: coffee.tastingNotes)
+        }
+        
+        Section("Flavor Profile") {
+            Grid {
+                GridRow {
+                    FlavorView(title: "Sweetness", value: coffee.sweetness)
+                }
+                GridRow {
+                    FlavorView(title: "Acidity", value: coffee.acidity)
+                }
+            }
+        }
+    }
 }
 
 struct FlavorView: View {
-  var title: String
-  @Binding var value: Int
-
-  var body: some View {
-    Text(title)
-      .gridCellAnchor(.leading)
-      .foregroundStyle(.primary)
-
-    Gauge(
-      value: Double(value),
-      in: 0...10
-    ) {
-      EmptyView()
+    var title: String
+    @Binding var value: Int
+    
+    var body: some View {
+        Text(title)
+            .gridCellAnchor(.leading)
+            .foregroundStyle(.primary)
+        
+        Gauge(
+            value: Double(value),
+            in: 0...10
+        ) {
+            EmptyView()
+        }
+        .tint(Color.secondary)
+        .labelsHidden()
+        
+        Stepper("\(value)", value: $value)
+        
+        Text(value.formatted())
+            .gridCellAnchor(.trailing)
+            .foregroundStyle(.secondary)
     }
-    .tint(Color.secondary)
-    .labelsHidden()
-
-    Stepper("\(value)", value: $value)
-
-    Text(value.formatted())
-      .gridCellAnchor(.trailing)
-      .foregroundStyle(.secondary)
-  }
 }
 
 struct CoffeeEditor_Previews: PreviewProvider {
-  struct Preview: View {
-    @State private var coffee = CoffeeViewModel.newCoffee
-    @StateObject private var model = CoffeeViewModel.preview
-
-    var body: some View {
-      CoffeeEditor(model: model, coffeeToEdit: $coffee)
+    struct Preview: View {
+        @State private var coffee = CoffeeViewModel.newCoffee
+        @StateObject private var model = CoffeeViewModel.preview
+        
+        var body: some View {
+            CoffeeEditor(model: model, coffeeToEdit: $coffee)
+        }
     }
-  }
-
-  static var previews: some View {
-    NavigationStack {
-      Preview()
+    
+    static var previews: some View {
+        NavigationStack {
+            Preview()
+        }
     }
-  }
 }

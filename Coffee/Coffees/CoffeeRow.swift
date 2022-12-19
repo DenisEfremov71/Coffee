@@ -33,15 +33,15 @@
 import SwiftUI
 
 struct CoffeeRow: View {
-  var coffee: Coffee
-
-  var body: some View {
-    Text(coffee.name)
-  }
+    var coffee: Coffee
+    
+    var body: some View {
+        Text(coffee.name)
+    }
 }
 
 struct CoffeeRow_Previews: PreviewProvider {
-  static var previews: some View {
-    CoffeeRow(coffee: .tastyBeans)
-  }
+    static var previews: some View {
+        CoffeeRow(coffee: .tastyBeans)
+    }
 }

@@ -33,34 +33,34 @@
 import SwiftUI
 
 struct Sidebar: View {
-  @Binding var selection: Panel?
-
-  var body: some View {
-    List(selection: $selection) {
-      NavigationLink(value: Panel.coffee) {
-        Label("Coffees", systemImage: "cup.and.saucer.fill")
-      }
-      .navigationTitle("Coffee")
-      #if os(macOS)
-      .navigationSplitViewColumnWidth(min: 200, ideal: 200)
-      #endif
+    @Binding var selection: Panel?
+    
+    var body: some View {
+        List(selection: $selection) {
+            NavigationLink(value: Panel.coffee) {
+                Label("Coffees", systemImage: "cup.and.saucer.fill")
+            }
+            .navigationTitle("Coffee")
+#if os(macOS)
+            .navigationSplitViewColumnWidth(min: 200, ideal: 200)
+#endif
+        }
     }
-  }
 }
 
 struct Sidebar_Previews: PreviewProvider {
-  struct Preview: View {
-    @State private var selection: Panel? = Panel.coffee
-    var body: some View {
-      Sidebar(selection: $selection)
+    struct Preview: View {
+        @State private var selection: Panel? = Panel.coffee
+        var body: some View {
+            Sidebar(selection: $selection)
+        }
     }
-  }
-
-  static var previews: some View {
-    NavigationSplitView {
-      Preview()
-    } detail: {
-      Text("Detail!")
+    
+    static var previews: some View {
+        NavigationSplitView {
+            Preview()
+        } detail: {
+            Text("Detail!")
+        }
     }
-  }
 }

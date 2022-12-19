@@ -33,64 +33,63 @@
 import SwiftUI
 import CoffeeKit
 
-// TODO: - delete this comment
 struct CoffeesView: View {
-  @ObservedObject var model: CoffeeViewModel
-  @State var isAddingCoffee: Bool = false
-  @State var coffeeToEdit: Coffee = CoffeeViewModel.newCoffee
-
-  var coffees: [Coffee] {
-    model.coffees
-  }
-
-  var body: some View {
-    ZStack {
-      list
-      ProgressView()
-        .opacity(coffees.isEmpty ? 1 : 0)
+    @ObservedObject var model: CoffeeViewModel
+    @State var isAddingCoffee: Bool = false
+    @State var coffeeToEdit: Coffee = CoffeeViewModel.newCoffee
+    
+    var coffees: [Coffee] {
+        model.coffees
     }
-      .navigationTitle("Coffees")
-  }
-
-  var list: some View {
-    List(coffees) { coffee in
-      Button {
-        coffeeToEdit = coffee
-        isAddingCoffee = true
-      } label: {
-        CoffeeRow(coffee: coffee)
-      }
-    }
-    .accessibilityIdentifier(AccessibilityIdentifiers.coffeeList)
-    .toolbar {
-      ToolbarItemGroup {
-        Button {
-          coffeeToEdit = CoffeeViewModel.newCoffee
-          isAddingCoffee = true
-        } label: {
-          Label("New Coffee", systemImage: "plus")
+    
+    var body: some View {
+        ZStack {
+            list
+            ProgressView()
+                .opacity(coffees.isEmpty ? 1 : 0)
         }
-        .accessibility(identifier: AccessibilityIdentifiers.createCoffeeButton)
-      }
+        .navigationTitle("Coffees")
     }
-    .sheet(isPresented: $isAddingCoffee) {
-      NavigationView {
-        CoffeeEditor(model: model, coffeeToEdit: $coffeeToEdit)
-      }
+    
+    var list: some View {
+        List(coffees) { coffee in
+            Button {
+                coffeeToEdit = coffee
+                isAddingCoffee = true
+            } label: {
+                CoffeeRow(coffee: coffee)
+            }
+        }
+        .accessibilityIdentifier(AccessibilityIdentifiers.coffeeList)
+        .toolbar {
+            ToolbarItemGroup {
+                Button {
+                    coffeeToEdit = CoffeeViewModel.newCoffee
+                    isAddingCoffee = true
+                } label: {
+                    Label("New Coffee", systemImage: "plus")
+                }
+                .accessibility(identifier: AccessibilityIdentifiers.createCoffeeButton)
+            }
+        }
+        .sheet(isPresented: $isAddingCoffee) {
+            NavigationView {
+                CoffeeEditor(model: model, coffeeToEdit: $coffeeToEdit)
+            }
+        }
     }
-  }
 }
 
 struct Coffees_Previews: PreviewProvider {
-  struct Preview: View {
-    @StateObject private var model = CoffeeViewModel.preview
-
-    var body: some View {
-      CoffeesView(model: model)
+    struct Preview: View {
+        @StateObject private var model = CoffeeViewModel.preview
+        
+        var body: some View {
+            CoffeesView(model: model)
+        }
     }
-  }
-
-  static var previews: some View {
-    Preview()
-  }
+    
+    static var previews: some View {
+        Preview()
+    }
 }

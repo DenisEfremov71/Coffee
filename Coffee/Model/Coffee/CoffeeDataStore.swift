@@ -33,6 +33,6 @@
 import Foundation
 
 protocol CoffeeDataStore {
-  func fetchCoffee() async throws -> [Coffee]
-  func saveCoffee(_ coffee: Coffee) async throws
+    func fetchCoffee() async throws -> [Coffee]
+    func saveCoffee(_ coffee: Coffee) async throws
 }

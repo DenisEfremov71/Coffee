@@ -34,28 +34,28 @@ import Foundation
 
 @MainActor
 class UserDefaultsCoffeeDataStore: CoffeeDataStore {
-  var defaultCoffees: [Coffee] = [
-    .tastyBeans,
-    .strongBeans
-  ]
-
-  func fetchCoffee() async throws -> [Coffee] {
-    guard let savedCoffeeData = UserDefaults.standard.object(forKey: "coffees") as? Data else {
-      return defaultCoffees
+    var defaultCoffees: [Coffee] = [
+        .tastyBeans,
+        .strongBeans
+    ]
+    
+    func fetchCoffee() async throws -> [Coffee] {
+        guard let savedCoffeeData = UserDefaults.standard.object(forKey: "coffees") as? Data else {
+            return defaultCoffees
+        }
+        let savedCoffees = try JSONDecoder().decode([Coffee].self, from: savedCoffeeData)
+        return savedCoffees
     }
-    let savedCoffees = try JSONDecoder().decode([Coffee].self, from: savedCoffeeData)
-    return savedCoffees
-  }
-
-  func saveCoffee(_ coffee: Coffee) async throws {
-    var coffees = try await fetchCoffee()
-    if let index = coffees.firstIndex(where: { $0.id == coffee.id }) {
-      coffees[index] = coffee
-    } else {
-      coffees.append(coffee)
+    
+    func saveCoffee(_ coffee: Coffee) async throws {
+        var coffees = try await fetchCoffee()
+        if let index = coffees.firstIndex(where: { $0.id == coffee.id }) {
+            coffees[index] = coffee
+        } else {
+            coffees.append(coffee)
+        }
+        
+        let encoded = try JSONEncoder().encode(coffees)
+        UserDefaults.standard.set(encoded, forKey: "coffees")
     }
-
-    let encoded = try JSONEncoder().encode(coffees)
-    UserDefaults.standard.set(encoded, forKey: "coffees")
-  }
 }

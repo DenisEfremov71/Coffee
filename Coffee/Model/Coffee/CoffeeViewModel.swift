@@ -34,56 +34,56 @@ import SwiftUI
 
 @MainActor
 class CoffeeViewModel: ObservableObject {
-  enum CoffeeError: LocalizedError {
-    case emptyName
-
-    var errorDescription: String? {
-      switch self {
-      case .emptyName: return String(localized: "Coffee must have a name")
-      }
+    enum CoffeeError: LocalizedError {
+        case emptyName
+        
+        var errorDescription: String? {
+            switch self {
+            case .emptyName: return String(localized: "Coffee must have a name")
+            }
+        }
     }
-  }
-
-  @Published var coffees: [Coffee] = []
-
-  @Published var showCoffeeErrorAlert = false
-  @Published var saveCoffeeError: CoffeeViewModel.CoffeeError?
-
-  static var newCoffee: Coffee {
-    Coffee(
-      id: Int.random(in: 0...Int.max),
-      name: "",
-      tastingNotes: "",
-      sweetness: 0,
-      acidity: 0
-    )
-  }
-
-  let coffeeDataStore: CoffeeDataStore
-
-  init(coffeeDataStore: CoffeeDataStore) {
-    self.coffeeDataStore = coffeeDataStore
-
-    Task {
-      try? await updateCoffees()
+    
+    @Published var coffees: [Coffee] = []
+    
+    @Published var showCoffeeErrorAlert = false
+    @Published var saveCoffeeError: CoffeeViewModel.CoffeeError?
+    
+    static var newCoffee: Coffee {
+        Coffee(
+            id: Int.random(in: 0...Int.max),
+            name: "",
+            tastingNotes: "",
+            sweetness: 0,
+            acidity: 0
+        )
     }
-  }
-
-  func updateCoffees() async throws {
-    self.coffees = try await coffeeDataStore.fetchCoffee()
-  }
-
-  func saveCoffee(_ coffee: Coffee) async throws {
-    guard !coffee.name.isEmpty else {
-      saveCoffeeError = .emptyName
-      showCoffeeErrorAlert = true
-      throw CoffeeError.emptyName
+    
+    let coffeeDataStore: CoffeeDataStore
+    
+    init(coffeeDataStore: CoffeeDataStore) {
+        self.coffeeDataStore = coffeeDataStore
+        
+        Task {
+            try? await updateCoffees()
+        }
     }
-    try await coffeeDataStore.saveCoffee(coffee)
-    self.coffees = try await coffeeDataStore.fetchCoffee()
-  }
+    
+    func updateCoffees() async throws {
+        self.coffees = try await coffeeDataStore.fetchCoffee()
+    }
+    
+    func saveCoffee(_ coffee: Coffee) async throws {
+        guard !coffee.name.isEmpty else {
+            saveCoffeeError = .emptyName
+            showCoffeeErrorAlert = true
+            throw CoffeeError.emptyName
+        }
+        try await coffeeDataStore.saveCoffee(coffee)
+        self.coffees = try await coffeeDataStore.fetchCoffee()
+    }
 }
 
 extension CoffeeViewModel {
-  static let preview = CoffeeViewModel(coffeeDataStore: TestCoffeeDataStore())
+    static let preview = CoffeeViewModel(coffeeDataStore: TestCoffeeDataStore())
 }
