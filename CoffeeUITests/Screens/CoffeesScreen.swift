@@ -34,12 +34,12 @@ import CoffeeKit
 import XCTest
 
 class CoffeesScreen: Screen {
-  lazy private var addCoffeeButton = app.buttons[AccessibilityIdentifiers.createCoffeeButton]
-
-  @discardableResult
-  func tapAddCoffeeButton() -> CoffeesScreen {
-    XCTAssert(addCoffeeButton.exists)
-    addCoffeeButton.tap()
-    return self
-  }
+    lazy private var addCoffeeButton = app.buttons[AccessibilityIdentifiers.createCoffeeButton]
+    
+    @discardableResult
+    func tapAddCoffeeButton() -> CoffeesScreen {
+        XCTAssert(addCoffeeButton.exists)
+        addCoffeeButton.tap()
+        return self
+    }
 }

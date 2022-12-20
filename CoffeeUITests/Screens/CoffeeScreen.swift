@@ -34,20 +34,20 @@ import CoffeeKit
 import XCTest
 
 class CoffeeScreen: Screen {
-  lazy private var saveCoffeeButton = app.buttons[AccessibilityIdentifiers.saveCoffeeButton]
-  lazy private var closeSaveCoffeeErrorAlertButton = app.buttons[AccessibilityIdentifiers.closeErrorAlertButton]
-
-  @discardableResult
-  func tapSaveCoffee() -> CoffeeScreen {
-    XCTAssert(saveCoffeeButton.exists)
-    saveCoffeeButton.tap()
-    return self
-  }
-
-  @discardableResult
-  func tapCloseSaveCoffeeErrorAlertButton() -> CoffeeScreen {
-    XCTAssert(closeSaveCoffeeErrorAlertButton.exists)
-    closeSaveCoffeeErrorAlertButton.tap()
-    return self
-  }
+    lazy private var saveCoffeeButton = app.buttons[AccessibilityIdentifiers.saveCoffeeButton]
+    lazy private var closeSaveCoffeeErrorAlertButton = app.buttons[AccessibilityIdentifiers.closeErrorAlertButton]
+    
+    @discardableResult
+    func tapSaveCoffee() -> CoffeeScreen {
+        XCTAssert(saveCoffeeButton.exists)
+        saveCoffeeButton.tap()
+        return self
+    }
+    
+    @discardableResult
+    func tapCloseSaveCoffeeErrorAlertButton() -> CoffeeScreen {
+        XCTAssert(closeSaveCoffeeErrorAlertButton.exists)
+        closeSaveCoffeeErrorAlertButton.tap()
+        return self
+    }
 }
